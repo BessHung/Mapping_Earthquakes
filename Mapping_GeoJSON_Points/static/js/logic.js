@@ -1,19 +1,16 @@
-// Add console.log to check to see if our code is working.
-console.log("working");
-
 // Create the map object with a center and zoom level.
 // var mymap = L.map('mapid').setView([40.7, -94.5], 4);
 
 // Create the map object with a center and zoom level.
 var map = L.map("mapid", {
     center: [
-      40.07232511191709, -101.03118248038594
+      37.5, -122.5
     ],
     zoom: 5
   });
 
 
-//  --------Add a single marker to the map for Los Angeles, California.-----
+//  --------13.4.1 Add a single marker to the map for Los Angeles, California.-----
 // let marker = L.marker([34.0522, -118.2437]).addTo(map);
 
 // ---circle---
@@ -30,10 +27,8 @@ var map = L.map("mapid", {
 //   color:'black'
 // }).addTo(map);
 
-// Get data from cities.js
-let cityData = cities;
 
-// --------multiple markers: Loop through the cities array and create one marker for each city.------
+// --------13.4.2 multiple markers: Loop through the cities array and create one marker for each city.------
 // cityData.forEach(function(city){
 //   console.log(city);
 //   L.marker(city.location)
@@ -54,7 +49,7 @@ let cityData = cities;
 //   .addTo(map);
 // });
 
-// --------add lines in map ------------
+// --------13.4.3 add lines in map ------------
 // single line: Coordinates for each point to be used in the line.
 // let line = [
 //   [33.9416,-118.4085],
@@ -78,33 +73,75 @@ let cityData = cities;
 // }).addTo(map);
 
 // skill drill
-let line =[
-  [39.37677196293772, -122.38005251616829],
-  [30.197610175245632, -97.66622415715328],
-  [43.677911565759906, -79.62426180322181],
-  [40.641416913053455, -73.77781723774388]
-];
+// let line =[
+//   [39.37677196293772, -122.38005251616829],
+//   [30.197610175245632, -97.66622415715328],
+//   [43.677911565759906, -79.62426180322181],
+//   [40.641416913053455, -73.77781723774388]
+// ];
 
-L.polyline(line,{
-  color:"blue",
-  opacity: 0.5,
-  weight: 4
+// L.polyline(line,{
+//   color:"blue",
+//   opacity: 0.5,
+//   weight: 4
+// }).addTo(map);
+
+
+// --------GeoJSON--------
+// Add GeoJSON data.
+let sanFranAirport =
+{"type":"FeatureCollection","features":[{
+    "type":"Feature",
+    "properties":{
+        "id":"3469",
+        "name":"San Francisco International Airport",
+        "city":"San Francisco",
+        "country":"United States",
+        "faa":"SFO",
+        "icao":"KSFO",
+        "alt":"13",
+        "tz-offset":"-8",
+        "dst":"A",
+        "tz":"America/Los_Angeles"},
+        "geometry":{
+            "type":"Point",
+            "coordinates":[-122.375,37.61899948120117]}}
+]};
+
+// Grabbing our GeoJSON data.
+// add Popup marker by pointToLayer function
+// L.geoJSON(sanFranAirport,{
+//   pointToLayer: function (feature, latling){
+//     console.log(feature);
+//     return L.marker(latling)
+//     .bindPopup(`<h2>${feature.properties.city}</h2>`);
+//   }
+// }).addTo(map);
+
+// add Popup marker by onEachFeature function
+L.geoJson(sanFranAirport, {
+  onEachFeature: function(feature, layer) {
+    console.log(layer);
+    layer.bindPopup(`<h2>${feature.properties.city}</h2>`);
+   }
 }).addTo(map);
+
+
 
 
 // Use the Leaflet Documentation  
 // We create the tile layer that will be the background of our map.
-var light = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+var streets = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 18,
-    id: 'mapbox/light-v10',
+    id: 'mapbox/streets-v11',
     tileSize: 512,
     zoomOffset: -1,
     accessToken: API_KEY
 });
 
 // Then we add our 'graymap' tile layer to the map.
-light.addTo(map);
+streets.addTo(map);
 
 
 // Use the Mapbox Styles API - Static Tiles API format
