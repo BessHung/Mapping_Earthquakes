@@ -4,9 +4,9 @@
 // Create the map object with a center and zoom level.
 var map = L.map("mapid", {
     center: [
-      37.5, -122.5
+      30, 30
     ],
-    zoom: 5
+    zoom: 2
   });
 
 
@@ -88,28 +88,29 @@ var map = L.map("mapid", {
 
 
 // --------GeoJSON--------
-// Add GeoJSON data.
-let sanFranAirport =
-{"type":"FeatureCollection","features":[{
-    "type":"Feature",
-    "properties":{
-        "id":"3469",
-        "name":"San Francisco International Airport",
-        "city":"San Francisco",
-        "country":"United States",
-        "faa":"SFO",
-        "icao":"KSFO",
-        "alt":"13",
-        "tz-offset":"-8",
-        "dst":"A",
-        "tz":"America/Los_Angeles"},
-        "geometry":{
-            "type":"Point",
-            "coordinates":[-122.375,37.61899948120117]}}
-]};
+// 13.5.1 Add GeoJSON data.
+// let sanFranAirport =
+// {"type":"FeatureCollection","features":[{
+//     "type":"Feature",
+//     "properties":{
+//         "id":"3469",
+//         "name":"San Francisco International Airport",
+//         "city":"San Francisco",
+//         "country":"United States",
+//         "faa":"SFO",
+//         "icao":"KSFO",
+//         "alt":"13",
+//         "tz-offset":"-8",
+//         "dst":"A",
+//         "tz":"America/Los_Angeles"},
+//         "geometry":{
+//             "type":"Point",
+//             "coordinates":[-122.375,37.61899948120117]}}
+// ]};
+
 
 // Grabbing our GeoJSON data.
-// add Popup marker by pointToLayer function
+// 13.5.2 add Popup marker by pointToLayer function
 // L.geoJSON(sanFranAirport,{
 //   pointToLayer: function (feature, latling){
 //     console.log(feature);
@@ -119,15 +120,26 @@ let sanFranAirport =
 // }).addTo(map);
 
 // add Popup marker by onEachFeature function
-L.geoJson(sanFranAirport, {
-  onEachFeature: function(feature, layer) {
-    console.log(layer);
-    layer.bindPopup(`<h2>${feature.properties.city}</h2>`);
-   }
-}).addTo(map);
+// L.geoJson(sanFranAirport, {
+//   onEachFeature: function(feature, layer) {
+//     console.log(layer);
+//     layer.bindPopup(`<h2>${feature.properties.city}</h2>`);
+//    }
+// }).addTo(map);
 
 
+// 13.5.3 Accessing the airport GeoJSON URL
+var airportData = "https://raw.githubusercontent.com/BessHung/Mapping_Earthquakes/Mapping_GeoJSON_Points/Mapping_GeoJSON_Points/majorAirports.json"
 
+// Grabbing our GeoJSON data.
+d3.json(airportData).then(function(data){
+  console.log(data);
+  // Creating a GeoJSON layer with the retrieved data.
+  L.geoJson(data,{
+    onEachFeature: function(feature, layer) {
+      layer.bindPopup(`<h2>${feature.properties.city}</h2> <hr> <h4>Airport name: ${feature.properties.name}</h4>`)}
+  }).addTo(map);
+});
 
 // Use the Leaflet Documentation  
 // We create the tile layer that will be the background of our map.
