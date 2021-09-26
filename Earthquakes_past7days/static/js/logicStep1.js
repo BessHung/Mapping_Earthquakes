@@ -1,27 +1,13 @@
 // --------GeoJSON--------
 
-// 13.5.5 Accessing the Toronto airline routes GeoJSON URL.
+// Accessing Past 7 Days All Earthquakes data
 let url ="https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
-// or ------ Create a style for the lines.
-let myStyle = {
-  color: "blue",
-  fillColor:"#ffffa1",
-  fillOpacity: 0.2,
-  weight: 1
-}
 
 d3.json(url).then(function(data){
   console.log(data);
   L.geoJSON(data).addTo(map);
 });
-
-// {
-//   style: myStyle,
-//   onEachFeature: function(feature, layer){
-//     layer.bindPopup(`<h2>Neighborhood: ${feature.properties.AREA_NAME}</h2>`);
-//   }
-// }
 
 // Use the Leaflet Documentation  
 // We create the tile layer that will be the background of our map.
