@@ -1,4 +1,3 @@
-// --------GeoJSON--------
 
 // Accessing Past 7 Days All Earthquakes data
 let url ="https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
